@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .todo-container {
+            width: 50%;
+            margin: 0 auto;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        button {
+            background-color: #ccc;
+            color: black;
+            border: 1px solid #ddd;
+        }
+        .todo-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .task-item {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="todo-container">
+        <h2>Todo List</h2>
+
+        <!-- Row 1: Todo Name and Description -->
+        <div>
+            <label for="todoName">Todo Name:</label>
+            <input type="text" id="todoName" placeholder="Enter Task Name">
+            <label for="description">Description:</label>
+            <input type="text" id="description" placeholder="Enter Task Description">
+        </div>
+
+        <!-- Row 2: Add Item button -->
+        <div>
+            <button onclick="addTask()">Add Item</button>
+        </div>
+
+        <!-- Row 3: Todos Room -->
+        <h3>Todos Room</h3>
+        <div class="todo-list" id="todoRoom"></div>
+
+        <!-- Row 4: Todos Done -->
+        <h3>Todos Done</h3>
+        <div class="todo-list" id="todosDone"></div>
+    </div>
+
+    <script>
+        // Add a task to the Todo Room
+        function addTask() {
+            const todoName = document.getElementById("todoName").value.trim();
+            const description = document.getElementById("description").value.trim();
+
+            if (!todoName || !description) {
+                alert("Please enter both task name and description.");
+                return; // Prevent adding if any field is empty
+            }
+
+            // Create task elements
+            const taskElement = document.createElement("div");
+            taskElement.classList.add("task-item");
+
+            const taskContent = document.createElement("p");
+            taskContent.textContent = `${todoName} - ${description}`;
+
+            const doneButton = document.createElement("button");
+            doneButton.textContent = "Done";
+            doneButton.onclick = () => markTaskDone(taskElement); // Mark task as done when clicked
+
+            taskElement.appendChild(taskContent);
+            taskElement.appendChild(doneButton);
+
+            // Add the task to the Todo Room
+            const todoRoom = document.getElementById("todoRoom");
+            todoRoom.appendChild(taskElement);
+
+            // Clear the input fields after adding the task
+            document.getElementById("todoName").value = '';
+            document.getElementById("description").value = '';
+        }
+
+        // Move task to Todos Done section
+        function markTaskDone(taskElement) {
+            const todosDone = document.getElementById("todosDone");
+            todosDone.appendChild(taskElement); // Move task to "Todos Done"
+            const doneButton = taskElement.querySelector("button");
+            doneButton.remove(); // Remove the "Done" button from the task
+        }
+    </script>
+
+</body>
+</html>
